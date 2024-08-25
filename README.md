@@ -1,6 +1,6 @@
 # Discord File Updater (User Client)
 
-Automatically download and manage files from Discord channels with ease using your personal Discord account.
+Automatically download, manage, and update local files from Discord channels with ease using your personal Discord account.
 
 ## Overview
 
