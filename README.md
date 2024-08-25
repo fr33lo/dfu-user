@@ -2,7 +2,7 @@
 
 Automatically download, manage, and update local files from Discord channels with ease using your personal Discord account. 
 
-Based on the [Discord bot](https://github.com/fr33lo/dfu) of the same name.
+Want to run it on the server side? Try out the OG, [DFU](https://github.com/fr33lo/dfu)!
 
 ## Overview
 
