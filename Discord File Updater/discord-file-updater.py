@@ -27,6 +27,7 @@ MAX_FILE_SIZE_MB = int(os.getenv('MAX_FILE_SIZE_MB', 100))
 CHECK_ARCHIVED_THREADS = os.getenv('CHECK_ARCHIVED_THREADS', 'true').lower() == 'true'
 MAX_CONCURRENT_DOWNLOADS = int(os.getenv('MAX_CONCURRENT_DOWNLOADS', 5))
 HISTORY_LIMIT = int(os.getenv('HISTORY_LIMIT', 100))
+REPLACE_FILES = os.getenv('REPLACE_FILES', 'false').lower() == 'true'  # New option
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -43,14 +44,20 @@ async def download_file(url: str, filename: str) -> Optional[str]:
                     if content_length > MAX_FILE_SIZE_MB * 1024 * 1024:
                         logger.warning(f"File {filename} exceeds maximum allowed size of {MAX_FILE_SIZE_MB}MB")
                         return None
-                    timestamp = int(datetime.now().timestamp())
-                    versioned_filename = f"{os.path.splitext(filename)[0]}_{timestamp}{os.path.splitext(filename)[1]}"
-                    filepath = os.path.join(PLUGINS_DIR, versioned_filename)
+                    
+                    if REPLACE_FILES:
+                        filepath = os.path.join(PLUGINS_DIR, filename)
+                    else:
+                        timestamp = int(datetime.now().timestamp())
+                        versioned_filename = f"{os.path.splitext(filename)[0]}_{timestamp}{os.path.splitext(filename)[1]}"
+                        filepath = os.path.join(PLUGINS_DIR, versioned_filename)
+                    
                     os.makedirs(os.path.dirname(filepath), exist_ok=True)
                     with open(filepath, 'wb') as f:
                         f.write(await resp.read())
-                    logger.info(f"File {versioned_filename} downloaded and saved to {filepath}")
-                    return versioned_filename
+                    
+                    logger.info(f"File {'replaced' if REPLACE_FILES else 'downloaded'}: {filepath}")
+                    return os.path.basename(filepath)
                 else:
                     logger.error(f"Failed to download {filename}. Status code: {resp.status}")
                     return None
@@ -99,7 +106,8 @@ async def update_all_channels() -> None:
         if channel:
             downloaded_files = await update_channel(channel)
             for file in downloaded_files:
-                await send_notification(f"New file downloaded from {channel.name}: {file}")
+                action = "replaced" if REPLACE_FILES else "downloaded"
+                await send_notification(f"New file {action} from {channel.name}: {file}")
         else:
             logger.error(f"Channel with ID {channel_id} not found.")
 
@@ -121,6 +129,7 @@ def main() -> None:
     if not all([TOKEN, CHANNEL_IDS, PLUGINS_DIR]):
         logger.error("Missing required environment variables. Please set DISCORD_USER_TOKEN, DISCORD_CHANNEL_IDS, and PLUGINS_DIR.")
     else:
+        logger.info(f"File replacement mode: {'ON' if REPLACE_FILES else 'OFF'}")
         client.run(TOKEN)
 
 if __name__ == "__main__":
