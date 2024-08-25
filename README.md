@@ -51,6 +51,7 @@ This script uses a user account token for authentication. Please be aware that u
 
 4. Run the script:
    ```
+   cd discord_file_updater
    python discord_file_updater.py
    ```
 
