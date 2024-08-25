@@ -1,4 +1,4 @@
-# Discord File Updater (User Client)
+# Discord File Updater User (DFUu)
 
 Automatically download, manage, and update local files from Discord channels with ease using your personal Discord account.
 
