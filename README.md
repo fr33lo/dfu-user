@@ -29,8 +29,8 @@ This script uses a user account token for authentication. Please be aware that u
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/discord-file-updater.git
-   cd discord-file-updater
+   git clone https://github.com/fr33lo/dfu-user.git
+   cd dfu-user
    ```
 
 2. Install the required dependencies:
