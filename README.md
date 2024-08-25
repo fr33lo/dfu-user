@@ -1,6 +1,8 @@
 # Discord File Updater User (DFUu)
 
-Automatically download, manage, and update local files from Discord channels with ease using your personal Discord account. Based on the [Discord bot](https://github.com/fr33lo/dfu) of the same name.
+Automatically download, manage, and update local files from Discord channels with ease using your personal Discord account. 
+
+Based on the [Discord bot](https://github.com/fr33lo/dfu) of the same name.
 
 ## Overview
 
